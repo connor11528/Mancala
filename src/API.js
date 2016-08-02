@@ -3,32 +3,23 @@ import { get, post, ajax } from 'jquery'
 import ServerActions from './actions/ServerActions'
 
 const API = {
-  getAllTenants() {
-    get('/api/tenants')
-      .done(response => { ServerActions.receiveTenants(response) })
+  getAllGameBoards() {
+    get('/api/gameboards')
+      .done(response => { ServerActions.receiveGameBoards(response) })
   },
 
-  addNewTenant(tenant) {
-    post('/api/tenants', tenant)
+  addNewGameBoard(gameBoard) {
+    post('/api/gameboards', gameboards)
       .done(response => { ServerActions.receiveOneTenant(response) })
   },
 
-  updateTenant(tenant) {
-    // ajax({
-    //   url: '/api/tenants',
-    //   method: 'PUT',
-    //   contentType: 'application/json',
-    //   data: JSON.stringify(tenant),
-    //   success: (res) => {
-    //     console.log(res);
-    //   }
-    // })
-    fetch('/api/tenants', {
+  updateGameBoard(gameboard) {
+    fetch('/api/gameboards', {
       method: 'PUT',
       headers: new Headers({
         'Content-Type': 'application/json'
       }),
-      body: JSON.stringify(tenant)
+      body: JSON.stringify(gameboard)
     })
       .then((res) => res.json())
       .then(data => {
@@ -36,8 +27,8 @@ const API = {
       })
   },
 
-  deleteTenant(tenantID) {
-    fetch('/api/tenants/' + tenantID, {
+  deleteGameBoard(gameBoardID) {
+    fetch('/api/gameboards/' + gameBoardID, {
       method: 'DELETE'
     })
       .then(response => {
@@ -45,7 +36,7 @@ const API = {
       })
       .then(data => {
         console.log(data);
-        ServerActions.receiveTenants(data)
+        ServerActions.receiveGameBoards(data)
       })
       .catch(err => {
         console.log(err);

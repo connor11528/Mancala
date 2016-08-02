@@ -1,8 +1,8 @@
 import { Router } from 'express'
 const router = Router();
 
-import tenants from './tenants'
+import gameboards from './gameboards'
 
-router.use('/tenants', tenants);
+router.use('/gameboards', gameboards);
 
 export default router

@@ -1,28 +1,29 @@
 import { EventEmitter } from 'events'
 import AppDispatcher from '../AppDispatcher'
 
-let _gameboard = [];
+let _gameboards = [];
+//let _currplayer = 0;
 
-class GameBoardStore extends EventEmitter {
+class GameBoardsStore extends EventEmitter {
   constructor(props){
     super(props);
 
-    AppDispatcher.register(action => {
+     AppDispatcher.register(action => {
       switch(action.actionType) {
-        case 'RECEIVE_TENANTS':
-          _tenants = action.tenants;
+        case 'RECEIVE_GAMEBOARDS':
+          __gameboards = action.gameboards;
           this.emit('CHANGE');
           break;
-        case 'RECEIVE_ONE_TENANT':
-          _tenants.push(action.tenant);
+        case 'RECEIVE_ONE_GAMEBOARD':
+          __gameboards.push(action.gameboard);
           this.emit('CHANGE');
           break;
       }
     });
   }
 
-  getAllTenants() {
-    return _tenants;
+  getAllGameBoards() {
+    return _gameboards;
   }
 
   startListening(cb) {

@@ -17,7 +17,7 @@ const compiler = webpack(config);
 
 import mongoose from 'mongoose';
 
-mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/property-manager');
+mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/mancala');
 
 app.use(require('webpack-dev-middleware')(compiler, {
   noInfo: true,

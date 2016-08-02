@@ -1,18 +1,13 @@
 import AppDispatcher from '../AppDispatcher'
 
 const ServerActions = {
-  receiveTenants(tenants) {
+  receiveGameBoard(gameboard) {
     AppDispatcher.dispatch({
-      actionType: 'RECEIVE_TENANTS',
-      tenants
+      actionType: 'RECIEVE_GAME_BOARD',
+      gameboard
     });
-  },
-  receiveOneTenant(tenant) {
-    AppDispatcher.dispatch({
-      actionType: 'RECEIVE_ONE_TENANT',
-      tenant
-    })
   }
+  
 }
 
 export default ServerActions
