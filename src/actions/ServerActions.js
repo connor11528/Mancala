@@ -1,9 +1,15 @@
 import AppDispatcher from '../AppDispatcher'
 
 const ServerActions = {
-  receiveGameBoard(gameboard) {
+  receiveGameBoards(gameboards) {
     AppDispatcher.dispatch({
-      actionType: 'RECIEVE_GAME_BOARD',
+      actionType: 'RECEIVE_GAMEBOARDS',
+      gameboards
+    });
+  },
+  receiveOneGameBoard(gameboard) {
+    AppDispatcher.dispatch({
+      actionType: 'RECIEVE_ONE_GAMEBOARD',
       gameboard
     });
   }

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import AddGameBoardForm from './AddGameBoardForm'
-import GameBoardDisplay from './GameBoardDisplay'
+import GameBoardsDisplay from './GameBoardsDisplay'
 
 import GameBoardActions from '../actions/GameBoardActions'
 import GameBoardStore from '../stores/GameBoardStore'
@@ -16,6 +16,8 @@ export default class GameBoards extends Component {
     super(props);
 
     this.state = _getComponentState()
+
+    console.log("this.state", this.state);
     this._onChange = this._onChange.bind(this)
   }
 
@@ -33,11 +35,16 @@ export default class GameBoards extends Component {
   }
 
   render() {
+    return (
     <div className="text-center row">
         <h1>GameBoards</h1>
 
         <div className="col-xs-6 col-xs-offset-3">
-          <AddGameBoardForm addTenant={this.AddGameBoard} />
+          <AddGameBoardForm addGameBoard={this.AddGameBoard} />
+        </div>
+
+        <div className="col-xs-12">
+          <GameBoardsDisplay gameboards={this.state.gameboards} />
         </div>
 
 

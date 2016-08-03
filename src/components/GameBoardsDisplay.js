@@ -4,8 +4,23 @@ import GameBoard from './GameBoard';
 export default class GameBoardDisplay extends Component {
   constructor(props){
     super(props);
+    console.log("this.props", this.props);
+  }
 
-    this.state = {
+  render() {
+    let { gameboards } = this.props
+    let display = gameboards.length && gameboards.map(gameboard => <GameBoard key={gameboard._id} gameboard={gameboard} />);
+
+    return (
+        <div >
+          { display || 'No GameBoards To Display'}
+        </div>
+
+    )
+  }
+}
+
+    /*this.state = {
       gameboard:  this.props.gameboard,
       currPlayer: this.props.currPlayer,
       index: this.props.index
@@ -234,3 +249,4 @@ export default class GameBoardDisplay extends Component {
     )
   }
 }
+*/

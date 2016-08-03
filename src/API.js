@@ -8,9 +8,20 @@ const API = {
       .done(response => { ServerActions.receiveGameBoards(response) })
   },
 
-  addNewGameBoard(gameBoard) {
-    post('/api/gameboards', gameboards)
-      .done(response => { ServerActions.receiveOneTenant(response) })
+  getGameBoard(gameboardId){
+     get('/api/gameboards/' + gameboardId)
+      .done(response => { ServerActions.receiveGameBoard(response) })
+  },
+
+  addNewGameBoard(gameboard) {
+    console.log("gameboard in API.js:", gameboard);
+    ajax({
+      type: 'POST',
+      url: '/api/gameboards',
+      data: {game: JSON.stringify(gameboard)},
+      dataType: 'json'
+     }) 
+    .done(response => { ServerActions.receiveOneGameBoard(response) })
   },
 
   updateGameBoard(gameboard) {
@@ -19,7 +30,7 @@ const API = {
       headers: new Headers({
         'Content-Type': 'application/json'
       }),
-      body: JSON.stringify(gameboard)
+      body: JSON.stringify({gameboard: gameboard})
     })
       .then((res) => res.json())
       .then(data => {

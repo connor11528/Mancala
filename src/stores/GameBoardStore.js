@@ -1,7 +1,7 @@
 import { EventEmitter } from 'events'
 import AppDispatcher from '../AppDispatcher'
 
-let _gameboards = [];
+let __gameboards = [];
 //let _currplayer = 0;
 
 class GameBoardsStore extends EventEmitter {
@@ -23,10 +23,13 @@ class GameBoardsStore extends EventEmitter {
   }
 
   getAllGameBoards() {
-    return _gameboards;
+    console.log("__gameboards", __gameboards);
+    return __gameboards;
   }
 
   startListening(cb) {
+     console.log("__gameboards in startListening", __gameboards);
+
     this.on('CHANGE', cb)
   }
 
@@ -35,4 +38,4 @@ class GameBoardsStore extends EventEmitter {
   }
 }
 
-export default new GameBoardStore();
+export default new GameBoardsStore();

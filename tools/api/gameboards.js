@@ -1,35 +1,42 @@
 import { Router } from 'express'
 const router = Router();
 
-import GameBoard from '../db/GameBoard'
+import Game from '../db/Game'
 
 router.get('/', (req, res) => {
-  GameBoard.find({}, (err, gameboards) => {
-    return res.status(err ? 400 : 200).send(err || gameboards);
+  Game.find({}, (err, games) => {
+    return res.status(err ? 400 : 200).send(err || games);
+  })
+})
+
+router.get('/:id', (req, res) => {
+  Game.find({'_id' : req.params.id}, (err, game) => {
+    return res.status(err ? 400 : 200).send(err || game);
   })
 })
 
 router.post('/', (req, res) => {
-  GameBoard.create(req.body, (err, gameboard) => {
-    return res.status(err ? 400 : 200).send(err || gameboard);
+  //console.log("req.body:", req.body);
+  Game.create({}, (err, game) => {
+    return res.status(err ? 400 : 200).send(err || game);
   })
 })
 
 router.put('/', (req, res) => {
   console.log(req.body);
-  GameBoard.findByIdAndUpdate(req.body._id, req.body, 'new', (err, gameboard) => {
+  Game.findByIdAndUpdate(req.body._id, req.body, 'new', (err, game) => {
     if (err) return res.status(400).send(err);
-    GameBoard.find({}, (err, gameboards) => {
-      return res.status(err ? 400 : 200).send(err || gameboards)
+    Game.find({}, (err, games) => {
+      return res.status(err ? 400 : 200).send(err || games)
     })
   });
 })
 
 router.delete('/:id', (req, res) => {
-  GameBoard.findByIdAndRemove(req.params.id, (err, removed) => {
+  Game.findByIdAndRemove(req.params.id, (err, removed) => {
     if (err) return res.status(400).send(err);
-    GameBoard.find({}, (err, tenants) => {
-      return res.status(err ? 400 : 200).send(err || tenants)
+    Game.find({}, (err, games) => {
+      return res.status(err ? 400 : 200).send(err || games)
     })
   })
 })

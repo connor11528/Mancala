@@ -1,53 +1,162 @@
 import React, { Component } from 'react'
+import GameBoard from './GameBoard'
+import { Link } from 'react-router'
 
 import GameBoardActions from '../actions/GameBoardActions'
 
-export default class AddTenantForm extends Component {
+export default class AddGameBoardForm extends Component {
   constructor(props){
     super(props);
 
     this.state = {
-      name: '',
-      email: ''
+      gameboard : new Array(14).fill(0),
+      currPlayer: false
     }
 
-    this.onSubmit = this.onSubmit.bind(this);
+    this.initializeBoard = this.initializeBoard.bind(this);
   }
 
-  onSubmit(event) {
+  initializeBoard(event){
     event.preventDefault();
-    if (!this.state.name.length || !this.state.email.length) return;
-    TenantActions.addNewTenant(this.state);
-    this.setState({name: '', email: ''})
+    console.log("initializeing Board")
+    console.log("this.state", this.state);
   }
 
   render() {
     return (
-      <form>
-        <div className="form-group">
-          <label htmlFor="tenantName">Name</label>
-          <input type="text"
-                 className="form-control"
-                 id="tenantName"
-                 placeholder="Bob Jones"
-                 value={this.state.name}
-                 onChange={e => this.setState({name: e.target.value})}
-                 />
-        </div>
-        <div className="form-group">
-          <label htmlFor="tenantEmail">Email</label>
-          <input type="email"
-                 className="form-control"
-                 id="tenantEmail"
-                 placeholder="bob@jones.com"
-                 value={this.state.email}
-                 onChange={e => this.setState({email: e.target.value})}
-                 />
-        </div>
+      <div>
         <button className="btn btn-default"
-                onClick={this.onSubmit}
-                >Submit</button>
-      </form>
+                onClick={this.initializeBoard}
+                >Init Board</button>
+      </div>
     )
   }
 }
+
+
+
+/* {
+          position: 'bucket0',
+          stones: 0,
+          index: 0
+        },
+        {
+          position: 'row0',
+          stones: 0,
+          index: 1
+        },
+        {
+          position: 'row0',
+          stones: 0,
+          index: 2
+        },
+        {
+          position: 'row0',
+          stones: 0,
+          index: 3
+        },
+        {
+          position: 'row0',
+          stones: 0,
+          index: 4
+        },
+        {
+          position: 'row0',
+          stones: 0,
+          index: 5
+        },
+        {
+          position: 'row0',
+          stones: 0,
+          index: 6
+        },
+        {
+          position: 'bucket1',
+          stones: 0,
+          index: 7
+        },
+        {
+          position: 'row1',
+          stones: 0,
+          index: 8
+        },
+        {
+          position: 'row1',
+          stones: 0,
+          index: 9
+        },
+        {
+          position: 'row1',
+          stones: 0,
+          index: 10
+        },
+        {
+          position: 'row1',
+          stones: 0,
+          index: 11
+        },
+        {
+          position: 'row1',
+          stones: 0,
+          index: 12
+        },
+        {
+          position: 'row1',
+          stones: 0,
+          index: 13
+        }
+      ],*/
+    /*let hole = {
+        position: 'test',
+        stones: 0,
+        index: i
+    }
+
+    for(var i =0; i<14; i++){
+      if(i === 0){
+        //bucket1
+         hole = {
+          position: 'bucket0',
+          stones: 0,
+          index: i
+        }
+      }
+      if( i === 7){
+        //bucet 2
+         hole = {
+          position: 'bucket1',
+          stones: 0,
+          index: i
+        }
+      }
+
+      if(i > 0 && i<7){
+        //player1 side
+         hole = {
+          position: 'row0',
+          stones: 4,
+          index: i
+        }
+      }
+
+      else if(i>7 && i<=13){
+        //player2side
+         hole = {
+          position: 'row1',
+          stones: 4,
+          index: i
+        }
+      }
+
+      //gameArr.push(hole);
+      //this.state.gameboard.push(hole);
+      this.setState({gameboard: this.state.gameboard.concat([hole])})
+      //console.log(this.state.gameboard);
+      //console.log("Add " , hole.position, "to gameboard with", hole.stones, "stones")
+    }
+    console.log("this.state", this.state);
+    //this.setState({gameboard: this.state.gameboard});
+    GameBoardActions.addNewGameBoard(this.state);
+    this.setState({gameboard: []} )
+    }
+  }*/
