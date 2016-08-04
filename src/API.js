@@ -18,23 +18,28 @@ const API = {
     ajax({
       type: 'POST',
       url: '/api/gameboards',
-      data: {game: JSON.stringify(gameboard)},
+      data: JSON.stringify(gameboard),
       dataType: 'json'
      }) 
     .done(response => { ServerActions.receiveOneGameBoard(response) })
   },
 
-  updateGameBoard(gameboard) {
+  updateGameBoard(game) {
+    console.log("Game: ", game);
+    console.log('game.gameboard', game.gameboard);
+    console.log('game.currPlayer', game.currPlayer);
+    //console.log('game.gameboard', game.gameboard);
+
     fetch('/api/gameboards', {
       method: 'PUT',
       headers: new Headers({
         'Content-Type': 'application/json'
       }),
-      body: JSON.stringify({gameboard: gameboard})
+      body: JSON.stringify(game)
     })
       .then((res) => res.json())
       .then(data => {
-        console.log(data);
+        console.log("data:", data);
       })
   },
 

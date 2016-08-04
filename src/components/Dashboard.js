@@ -8,10 +8,10 @@ export default class Dashboard extends Component {
 
   render() {
     return (
-      <div className="text-center">
+      <div className = "container">
         <h1>Welcome to Mancala</h1>
-        <div className="container-fluid">
-          <Link className = "btn btn-primary" Link to="gameBoard">2 Player</Link>
+        <div>
+          <Link className = "btn btn-primary" Link to="gameBoards">Shared Screen Game</Link>
        </div>
       </div>
     )

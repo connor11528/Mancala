@@ -2,53 +2,42 @@ import React, { Component } from 'react'
 import AddGameBoardForm from './AddGameBoardForm'
 import GameBoardsDisplay from './GameBoardsDisplay'
 
+import BallDisplay from './BallDisplay'
+
 import GameBoardActions from '../actions/GameBoardActions'
 import GameBoardStore from '../stores/GameBoardStore'
-
+import css from './style.css'
 
 export default class GameBoard extends Component {
   constructor(props){
     super(props);
-
     this.state = {
       gameboard: this.props.gameboard
     }
-
-    console.log("this.props.gameboard in GameBoard.js: ", this.props.gameboard);
     this.startingPos = this.startingPos.bind(this)
   }
 
-    //game logic on cloned gameboard
-    //setState ({gameboard : clonedgameboard})
-    //gameboardactions.updatess
-
    startingPos(event) {
+
+    //swal({   title: "Error!",   text: "Here's my error message!",   type: "error",   confirmButtonText: "Cool" });
+
     event.preventDefault();
+    console.log('this.state:', this.state)
 
-    var stones = this.state.gameboard.gameboard;
-    console.log("stones", stones)
-
-    var player = this.state.gameboard.currPlayer;
-    console.log('player:', player);
+    var stones = (this.state.gameboard.gameboard);
+    var player = (this.state.gameboard.currPlayer);
 
     var gameOver = false;
     var holeIndex =  parseInt(event.target.id);
-    console.log("holeIndex:", holeIndex);
 
     //Pick Up Stones
     var stonesInHand = stones[holeIndex];
     stones[holeIndex] = 0;
-    console.log("pick up ", stonesInHand, "stones from hole", holeIndex, ":",stones[holeIndex]);
 
     let count = 0;
-    //index to loop around board
-    //var index = holeIndex;
-    var index = (holeIndex+1)%14;
-    console.log("starting at hole:", index);
+    var index = (holeIndex + 1)%14;
 
-    while(count < stonesInHand ){
-      //console.log("stone" , count ," of ", stonesInHand);
-      //console.log("on hole:", index);
+    while(count < stonesInHand && gameOver === false ){
 
       //skip oppositeplayers bucket
       if( (index === 7 && player === true)|| (index === 0 && player === false)){
@@ -61,34 +50,21 @@ export default class GameBoard extends Component {
 
        //drop stone in hole
        stones[index]++;
-       console.log(stones[index] , " stones in hole", index )
        count++;
 
         //if last stones lands in empty hole on your own side, collect pieces from opposite hole
         if(count  ===  stonesInHand && stones[index] === 1){
-          console.log("land in empty hole")
+
           //check if player1/row0 player0/row1  top row is plyer 1's bottom row is player 0s
           if( ((index > 0 && index < 7)  && player === false ) || ((index > 7 && index < 14) && player === true) ) {
-          console.log("in opposite row")
+
           //capture that piece and any piece on opposite side
           //1->13, 2->12, 3->11, 4 ->10, 5->9, 6->8
-          var opposite;
-          if(index === 1){opposite = 13;}
-          if(index === 2 ){opposite = 12;}
-          if(index === 3 ){opposite = 11;}
-          if(index === 4 ){opposite = 10;}
-          if(index === 5 ){opposite = 9;}
-          if(index === 6 ){opposite = 8;}
-          if(index === 8 ){opposite = 6;}
-          if(index === 9 ){opposite = 5;}
-          if(index === 10 ){opposite = 4;}
-          if(index === 11 ){opposite = 3;}
-          if(index === 12 ){opposite = 2;}
-          if(index === 13 ){opposite = 1;}
+          //var opposite;
 
+          var opposite = 14-index;
 
           //collect last stone and opposite stones
-
           if(player === false){
             stones[7] += (stones[opposite] +1);
             stones[opposite] = 0;
@@ -103,25 +79,18 @@ export default class GameBoard extends Component {
         }
        }
 
-        /*console.log("count:", count);
-        console.log("index:", index);
-        console.log("stonesInHand", stonesInHand);
-        console.log("position" , index);
-        console.log("player:", player);*/
-
         //if stone doesn't land in your bucket go to next player
         if(count  ===  stonesInHand){
-        console.log("last stone");
           if( (index === 0 && player === true ) || ( index ===7 && player === false) ){
             console.log("land in own bucket")
           }
         else{
-          player = !player;
+          player = !player;  
           console.log("switch to player: ", player)
         }
       }
 
-        //check for win d
+        //check for win
         var row0Count =0;
         var row1Count =0;
 
@@ -129,79 +98,138 @@ export default class GameBoard extends Component {
           if(stones[i+1] !== 0){
             row0Count += stones[i+1];
           }
-
           if(stones[i+8] !== 0){
             row1Count+= stones[i+8];
           }
         }
 
+        //if winner set gameover
+        //add swal
         if(row0Count === 0 ){
+          gameover = true;
           let winner = 'player 0';
           console.log("---------winner: ", winner);
           console.log("---------score: ", stones[0]);
+          stones = [0,4,4,4,4,4,4,0,4,4,4,4,4,4];
           break;
         }
         else if (row1Count ===0){
+          gameover = true;
           let winner = 'player 1';
           console.log("---------winner: ", winner);
           console.log("---------score: ", stones[7]);
+          stones = [0,4,4,4,4,4,4,0,4,4,4,4,4,4];
           break;
         }
       index = ((index + 1)%(14));
       }
     }
 
-      console.log("stones:", stones);
-      console.log("player: ", player);
-
-    console.log("this, ", this.state);
- 
     let newgameboard = {
       gameboard: stones,
       currPlayer: player
     }
-    //let newgameboard = update(this.state.gameboard, { gameboard: {$set: stones}})
 
+    console.log("------------------befote set: " , this.state.gameboard);
+    console.log("-----------------: " , this.state.gameboard.gameboard);
+ 
     this.setState({gameboard: newgameboard});
-    //this.setState({gameboard: {currPlayer: player}} );
+
+    console.log("----------------set:", this.state.gameboard );
+    console.log("-------------------:", this.state.gameboard.gameboard );
+
+
+    /*console.log("set state to " , {gameboard: newgameboard})
+    console.log("set state to " , newgameboard)
+    console.log("this.state.gameboard", this.state.gameboard);
+    console.log("this.state.gameboard._id", this.state.gameboard._id);*/
+
     GameBoardActions.updateGameBoard(this.state.gameboard);
-    console.log("set player:?" , this.state.gameboard);
+    //console.log("game" ,this.state.gameboard.gameboard);
+    console.log("this.state.gameboard.currPlayer" ,this.state.gameboard.currPlayer);
   }
 
-  render() {
+  render() { 
 
     let gameboard = this.state.gameboard;
 
-    var board = {
-      backgroundImage: 'url(' + 'http://bgfons.com/upload/wood%20_texture3177.jpg' + ')',
+    var rotate90 = {
+      position: 'absolute',
+      top: '380px',
+      WebkitTransform: 'rotate(90deg)',
+      MozTransform: 'rotate(90deg)',
+      OTransform: 'rotate(90deg)',
+      msTransform: 'rotate(90deg)',
+      transform: 'rotate(90deg)'
+    }
+
+    var rotateN90 = {
+      position: 'absolute',
+      top: '380px',
+      WebkitTransform: 'rotate(-90deg)',
+      MozTransform: 'rotate(-90deg)',
+      OTransform: 'rotate(-90deg)',
+      msTransform: 'rotate(-90deg)',
+      transform: 'rotate(-90deg)'
+    }
+
+    var letter90 = {
+
+      WebkitTransform: 'rotate(90deg)',
+      MozTransform: 'rotate(90deg)',
+      OTransform: 'rotate(90deg)',
+      msTransform: 'rotate(90deg)',
+      transform: 'rotate(90deg)'
+    }
+
+
+    var letterN90 = {
+      WebkitTransform: 'rotate(-90deg)',
+      MozTransform: 'rotate(-90deg)',
+      OTransform: 'rotate(-90deg)',
+      msTransform: 'rotate(-90deg)',
+      transform: 'rotate(-90deg)'
+    }
+
+   var board = {
+      zIndex: -2,
       height: 250,
       borderRadius: 30,
-      width: '740px',
-      boxShadow: 'inset 3px 1px 30px 3px #000000',
+      width: '760px',
+      boxShadow: 'inset 0px 3px 30px 3px #000000'
+
+     };
+
+     var bucket0 = {
+      float: 'left',
+      borderRadius: 10,
+      border: '1px solid black',
+      marginTop: '25px',
+      marginLeft: '20px',
+      paddingTop: '10px',
+      paddingLeft:'4px',
+      paddingRight: '4px',
+      width: '70px',
+      height: 200,
+      display: 'inline-block',
+      position: 'relative',
+      boxShadow: 'inset 5px 5px 30px #000000',
+      color: 'pink'
      };
 
      var bucket1 = {
+      float:'right',
       borderRadius: 10,
       border: '1px solid black',
-      marginTop: 0,
-      width: '60px',
+      width: '70px',
       height: 200,
+      marginTop: '25px',
+      marginRight: '20px',
+      paddingTop: '10px',
+      paddingLeft:'4px',
+      paddingRight: '4px',
       display: 'inline-block',
       position: 'relative',
-      bottom: '90px',
-      boxShadow: 'inset 5px 5px 30px #000000',
-      color: 'red'
-     };
-
-     var bucket2 = {
-      borderRadius: 10,
-      border: '1px solid black',
-      width: '60px',
-      height: 200,
-      display: 'inline-block',
-      marginTop: 25,
-      position: 'relative',
-      bottom: '90px',
       marginleft: '-20px',
       boxShadow: 'inset 5px 5px 30px #000000',
       color: 'red'
@@ -210,15 +238,14 @@ export default class GameBoard extends Component {
      var holes = {
       display: 'inline-block',
       width: '76%',
-      height: '90%',
-      paddingBottom: '40px',
+      height: '80%',
+      paddingLeft: '10px',
       position: 'relative',
-      top: '60px'
+      top: '35px',
       };
 
      var row1 = {
-      marginBottom: '95px'
-
+      /*paddingBottom: '50px'*/
      };
 
      var row2 = {
@@ -226,47 +253,78 @@ export default class GameBoard extends Component {
      };
 
      var hole = {
+      zIndex: '3',
+      float: 'left',
       border: '1px solid black',
-      padding: 32,
+      height: '75px',
+      paddingTop: '2px',
+      paddingLeft: '5px',
+      paddingRight: '5px',
+      width: '77px',
+      marginBottom: '23px',
       borderRadius: 25,
       color: 'blue',
-      margin: '10px',
+      margin: '8px',
+      fontSize: '100%',
       boxShadow: 'inset 5px 5px 25px #000000',
+      opacity: 1,
+
+      };
+
+      var bottom = {
+        position: 'relative',
+        bottom: '-520px'
       }
 
+      console.log("length:", this.state.gameboard.gameboard.length)
+      var ballstoDisplay = []
+      for(let i =0; i< this.state.gameboard.gameboard.length; i++){
+        let numballs = this.state.gameboard.gameboard[i];
+        //console.log('numballs: ', numballs, ' at i', i);
+        let ballHtml = []
+        for(let k=0; k<numballs; k++){
+          ballHtml.push(<BallDisplay />)
+        }
+        ballstoDisplay.push(ballHtml);
+        console.log("ballstoDisplay", ballstoDisplay[i]);
+      }
+
+      if(!this.state.gameboard.currPlayer) { var rotate = rotate90 ; var opRotate = letterN90}
+      if(this.state.gameboard.currPlayer) { var rotate = rotateN90; var opRotate = letter90}
+
+
     return (
-      <div className="container">
-
+      <div >
       <h4>Player {(this.state.gameboard.currPlayer)*1}'s turn</h4>
+      <div style = {rotate} className = "gameContainer">
+        <div style={board} className = 'background'>
+          <span style={bucket0} id='0'> <div> </div> {ballstoDisplay[0]} <div className = "stoneNum2"> {this.state.gameboard.gameboard[0]}</div></span>
+          <span style={holes}>
 
-        <p>Player 0 right bucket and top row</p> 
-        <p>Player 1 left bucket and bottom row</p> 
-        <div style = {board}>
-          <span style = {bucket1} id = '0'>{this.props.gameboard.gameboard[0]}</span>
-          <span style = {holes}>
-
-            <div style = {row1}>
-              <span style = {hole} onClick={this.startingPos} id = '1'>{this.state.gameboard.gameboard[1]}</span>
-              <span style = {hole} onClick={this.startingPos} id = '2'>{this.state.gameboard.gameboard[2]}</span>
-              <span style = {hole} onClick={this.startingPos} id = '3'>{this.state.gameboard.gameboard[3]}</span>
-              <span style = {hole} onClick={this.startingPos} id = '4'>{this.state.gameboard.gameboard[4]}</span>
-              <span style = {hole} onClick={this.startingPos} id = '5'>{this.state.gameboard.gameboard[5]}</span>
-              <span style = {hole} onClick={this.startingPos} id = '6'>{this.state.gameboard.gameboard[6]}</span>
+            <div style={row1}>
+              <span style={hole} className = "hoverHole" onClick={this.startingPos} id='1'> {ballstoDisplay[1]} <div className = "stoneNum" style = {opRotate} > {this.state.gameboard.gameboard[1]}</div></span>
+              <span style={hole} className = "hoverHole" onClick={this.startingPos} id='2'>{ballstoDisplay[2]} <div  className = "stoneNum" style = {opRotate} >{this.state.gameboard.gameboard[2]} </div></span>
+              <span style={hole} className = "hoverHole" onClick={this.startingPos} id='3'>{ballstoDisplay[3]} <div className = "stoneNum" style = {opRotate} >{this.state.gameboard.gameboard[3]} </div></span>
+              <span style={hole} className = "hoverHole" onClick={this.startingPos} id='4'>{ballstoDisplay[4]} <div className = "stoneNum" style = {opRotate} >{this.state.gameboard.gameboard[4]} </div></span>
+              <span style={hole} className = "hoverHole" onClick={this.startingPos} id='5'>{ballstoDisplay[5]} <div className = "stoneNum" style = {opRotate} >{this.state.gameboard.gameboard[5]} </div></span>
+              <span style={hole} className = "hoverHole" onClick={this.startingPos} id='6'> {ballstoDisplay[6]} <div className = "stoneNum" style = {opRotate} >{this.state.gameboard.gameboard[6]} </div></span>
             </div>
 
-            <div style = {row2}>
-              <span style = {hole} onClick={this.startingPos} id = '13'>{this.state.gameboard.gameboard[13]}</span>
-              <span style = {hole} onClick={this.startingPos} id = '12'>{this.state.gameboard.gameboard[12]}</span>
-              <span style = {hole} onClick={this.startingPos} id = '11'>{this.state.gameboard.gameboard[11]}</span>
-              <span style = {hole} onClick={this.startingPos} id = '10'>{this.state.gameboard.gameboard[10]}</span>
-              <span style = {hole} onClick={this.startingPos} id = '9'>{this.state.gameboard.gameboard[9]}</span>
-              <span style = {hole} onClick={this.startingPos} id = '8'>{this.state.gameboard.gameboard[8]}</span>
+            <div style ={row2}>
+              <span style ={hole} className = "hoverHole" onClick={this.startingPos} id='13'> {ballstoDisplay[13]} <div className = "stoneNum2" style = {opRotate} > {this.state.gameboard.gameboard[13]}</div></span>
+              <span style ={hole} className = "hoverHole" onClick={this.startingPos} id='12'>{ballstoDisplay[12]} <div className = "stoneNum2" style = {opRotate} > {this.state.gameboard.gameboard[12]}</div></span>
+              <span style ={hole} className = "hoverHole" onClick={this.startingPos} id='11'>{ballstoDisplay[11]} <div className = "stoneNum2" style = {opRotate} > {this.state.gameboard.gameboard[11]}</div></span>
+              <span style ={hole} className = "hoverHole" onClick={this.startingPos} id='10'> {ballstoDisplay[10]} <div className = "stoneNum2" style = {opRotate} > {this.state.gameboard.gameboard[10]}</div></span>
+              <span style ={hole} className = "hoverHole" onClick={this.startingPos} id='9'>{ballstoDisplay[9]} <div className = "stoneNum2" style = {opRotate} > {this.state.gameboard.gameboard[9]}</div></span>
+              <span style ={hole} className = "hoverHole" onClick={this.startingPos} id='8'>{ballstoDisplay[8]} <div className = "stoneNum2" style = {opRotate} > {this.state.gameboard.gameboard[8]}</div></span>
             </div>
           </span>
 
-          <span style = {bucket2} id = '0'>{this.state.gameboard.gameboard[7]}</span>
+          <span style = {bucket1} id = '7'><div> </div>{ballstoDisplay[7]} <div className = "stoneNum2"> {this.state.gameboard.gameboard[7]}</div></span>
         </div>
 
+
+      </div>
 
       </div>
     )

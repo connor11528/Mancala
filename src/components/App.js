@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router'
 
+
 export default class App extends Component {
   constructor(props){
     super(props);
@@ -9,12 +10,8 @@ export default class App extends Component {
   
   render() {
     return (
-      <div className="text-center">
-
-        <div className="container">
+      <div>
           {this.props.children}
-        </div>
-
       </div>
     )
   }

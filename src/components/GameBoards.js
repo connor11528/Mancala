@@ -36,14 +36,14 @@ export default class GameBoards extends Component {
 
   render() {
     return (
-    <div className="text-center row">
+    <div>
         <h1>GameBoards</h1>
 
-        <div className="col-xs-6 col-xs-offset-3">
+        <div>
           <AddGameBoardForm addGameBoard={this.AddGameBoard} />
         </div>
 
-        <div className="col-xs-12">
+        <div>
           <GameBoardsDisplay gameboards={this.state.gameboards} />
         </div>
 

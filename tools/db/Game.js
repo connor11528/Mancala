@@ -4,78 +4,10 @@ let Game;
 
 let gameSchema = Schema({
   currPlayer: {type: Boolean, default: false},
-  gameboard : {type: [Number], default: [0,4,4,4,4,4,4,0,4,4,4,4,4,4] }
+  gameboard : {type: [], default: [0,4,4,4,4,4,4,0,4,4,4,4,4,4] } //[new Array(14).fill(0)] }
 });
 
 
 Game = mongoose.model('Game', gameSchema);
 
 export default Game;
-
-
-/*,
-        {
-          position: String,
-          stones: Number,
-          index: 1
-        },
-        {
-          position: String,
-          stones: Number,
-          index: Number
-        },
-        {
-          position: String,
-          stones: Number,
-          index: Number
-        },
-        {
-          position: String,
-          stones: Number,
-          index: Number
-        },
-        {
-          position: String,
-          stones: Number,
-          index: Number
-        },
-        {
-          position: String,
-          stones: Number,
-          index: Number
-        },
-        {
-          position: String,
-          stones: Number,
-          index: Number
-        },
-        {
-          position: String,
-          stones: Number,
-          index: Number
-        },
-        {
-          position: String,
-          stones: Number,
-          index: Number
-        },
-        {
-          position: String,
-          stones: Number,
-          index: Number
-        },
-        {
-          position: String,
-          stones: Number,
-          index: Number
-        },
-        {
-          position: String,
-          stones: Number,
-          index: Number
-        },
-        {
-          position: String,
-          stones: Number,
-          index: Number
-        }*/

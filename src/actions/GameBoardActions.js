@@ -12,9 +12,9 @@ const GameBoardActions = {
   getGameBoard(gameboard) {
     API.getGameBoard(gameboard);
   },
-  updateGameBoard(gameboard){
-    console.log("update gmeboard:", gameboard)
-    API.updateGameBoard(gameboard);
+  updateGameBoard(game){
+    console.log("update game:", game)
+    API.updateGameBoard(game);
   }
 }
 

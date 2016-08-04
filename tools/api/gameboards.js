@@ -16,14 +16,14 @@ router.get('/:id', (req, res) => {
 })
 
 router.post('/', (req, res) => {
-  //console.log("req.body:", req.body);
+  console.log("req.body:", req.body);
   Game.create({}, (err, game) => {
     return res.status(err ? 400 : 200).send(err || game);
   })
 })
 
 router.put('/', (req, res) => {
-  console.log(req.body);
+  console.log("req body:", req.body);
   Game.findByIdAndUpdate(req.body._id, req.body, 'new', (err, game) => {
     if (err) return res.status(400).send(err);
     Game.find({}, (err, games) => {

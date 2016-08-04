@@ -23,13 +23,10 @@ class GameBoardsStore extends EventEmitter {
   }
 
   getAllGameBoards() {
-    console.log("__gameboards", __gameboards);
     return __gameboards;
   }
 
   startListening(cb) {
-     console.log("__gameboards in startListening", __gameboards);
-
     this.on('CHANGE', cb)
   }
 

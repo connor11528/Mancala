@@ -9,7 +9,7 @@ export default class Welcome extends Component {
   render() {
     return (
         <div className="container-fluid">
-          <Link className = "btn btn-primary" Link to="gameboards">2 Player</Link>
+          <Link className = "btn btn-primary" Link to="gameboards">nada</Link>
        </div>
     )
   }
