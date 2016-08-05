@@ -50,8 +50,8 @@ export default class GameBoard extends Component {
     GameBoardStore.stopListening(this.onChange);
   }
 
-  newGame(event){
-    event.preventDefault();
+  newGame(){
+    //event.preventDefault();
     GameBoardActions.deleteGameBoard(this.props.gameboardID);
     window.location = '/';
 
@@ -154,6 +154,7 @@ export default class GameBoard extends Component {
           let winner = 'player 0';
           console.log("---------winner: ", winner);
           console.log("---------score: ", stones[0]);
+          alert(this.state.gameboard.player0 , 'wins with ', stones[7], 'stones')
           stones = [0,4,4,4,4,4,4,0,4,4,4,4,4,4];
           break;
         }
@@ -161,7 +162,9 @@ export default class GameBoard extends Component {
           let winner = 'player 1';
           console.log("---------winner: ", winner);
           console.log("---------score: ", stones[7]);
+          alert(this.state.gameboard.player1 , 'wins with ', stones[0], 'stones')
           stones = [0,4,4,4,4,4,4,0,4,4,4,4,4,4];
+
           break;
         }
       index = ((index + 13)%(14));
@@ -199,7 +202,7 @@ export default class GameBoard extends Component {
 
     var rotate90 = {
       position: 'absolute',
-      top: '400px',
+      top: '10px',
       WebkitTransform: 'rotate(90deg)',
       MozTransform: 'rotate(90deg)',
       OTransform: 'rotate(90deg)',
@@ -209,7 +212,7 @@ export default class GameBoard extends Component {
 
     var rotateN90 = {
       position: 'absolute',
-      top: '400px',
+      top: '10px',
       WebkitTransform: 'rotate(-90deg)',
       MozTransform: 'rotate(-90deg)',
       OTransform: 'rotate(-90deg)',
@@ -354,9 +357,9 @@ export default class GameBoard extends Component {
     return (
       <div>
 
-      <div>
-      <button className = 'btn btn-warning' onClick = {this.newGame}>New Game</button>
-      <h4>{name}'s turn</h4>
+      <button className = 'btn btn-warning title newgamebtn font' onClick = {this.newGame}>New Game</button>
+      <h4 className = 'title name font'>{name}'s turn</h4>
+      <div className = 'fullwidth'>
         <div style = {rotate} className = "gameContainer">
           <div style={board} className = 'background'>
             <span style={bucket0} id='0'> <div> </div> {ballstoDisplay[0]} <div className = "stoneNum2"> {this.state.gameboard.gameboard[0]}</div></span>

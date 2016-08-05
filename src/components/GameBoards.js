@@ -50,16 +50,14 @@ export default class GameBoards extends Component {
   render() {
     return (
     <div>
-        <div className = 'tablebackground'>
-        <h1>Mancala</h1>
+        <div>
+        <h2 className ='title'>Mancala</h2>
 
         {/*<div>
           <AddGameBoardForm addGameBoard={this.AddGameBoard} />
         </div>*/}
 
-        <div>
           <GameBoardsDisplay gameboards={this.state.gameboards} />
-        </div>
         </div>
       </div>
     )

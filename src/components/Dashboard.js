@@ -32,11 +32,11 @@ export default class Dashboard extends Component {
   render() {
     return (
       <div>
-        <h1>Mancala</h1>
-        <div>
+        <div className = ' text-center'>
+        <h1 className = "title2">Mancala</h1>
           
 
-        <form> 
+        <form className = 'playerForm font'>  
           <div className="form-group">
             <label htmlFor="tenantName">Player 1</label>
             <input type="text"
@@ -57,7 +57,7 @@ export default class Dashboard extends Component {
             />
           </div>
 
-              <button className = 'btn btn-primary' onClick={this.initializeBoard}> New Game</button>
+              <button className = 'btn btn-success font startbtn' onClick={this.initializeBoard}> New Game</button>
 
         </form>
 

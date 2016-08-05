@@ -11,7 +11,8 @@
 .tablebackground{
   background-color: none;
   width: 100%;
- /* background: url('http://preview.turbosquid.com/Preview/2014/07/10__19_08_25/CartoonWoodTable.5.png140b042e-ef99-4d6e-81a1-321babb0087cOriginal.jpg') no-repeat center center fixed; 
+  position: absolute;
+  left:10px; /* background: url('http://preview.turbosquid.com/Preview/2014/07/10__19_08_25/CartoonWoodTable.5.png140b042e-ef99-4d6e-81a1-321babb0087cOriginal.jpg') no-repeat center center fixed; 
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -19,6 +20,57 @@
     /*background-image: url('http://preview.turbosquid.com/Preview/2014/07/10__19_08_25/CartoonWoodTable.5.png140b042e-ef99-4d6e-81a1-321babb0087cOriginal.jpg')*/
 }
 
+.font{
+  font-family: Papyrus, fantasy;
+  font-size: 20px;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: 400;
+  line-height: 40px;
+}
+
+h1 {
+  font-family: Papyrus, fantasy;
+  font-size: 74px;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: 700;
+  line-height: 26.4px;
+}
+
+h2{
+  font-family: Papyrus, fantasy;
+  font-size: 44px;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: 700;
+  line-height: 26.4px;
+}
+
+.title2{
+  margin-top: 50%;
+}
+
+.playerForm{
+  margin-top: 35%;
+}
+
+.title{
+  position: absolute;
+  left: 50px;
+}
+
+.name{
+  margin-top: 80px;
+}
+
+.startbtn{
+  margin-top: 5%;
+}
+
+.newgamebtn{
+  margin-top: 125px;
+}
 .stoneNum{
   /*position: absolute;
   padding-left: 5px;*/
@@ -38,9 +90,18 @@
   background-color: #80654d;
 }
 
+.fullwidth{
+  height: 900px;
+  width:900px;
+  position: absolute;
+  left: 20%;
+  background-color: none;
+}
+
 .gameContainer{
-  position: relative;
-  left: 14%;
+  margin-top: 27%;
+  margin-left: 0%;
+  text-align: center;
   -moz-transition: all 1s ease;
   -webkit-transition: all 1s ease;
   -o-transition: all 1s ease;
