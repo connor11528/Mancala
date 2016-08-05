@@ -8,26 +8,61 @@ import GameBoardActions from '../actions/GameBoardActions'
 import GameBoardStore from '../stores/GameBoardStore'
 import css from './style.css'
 
+import ioClient from 'socket.io-client';
+
+
 export default class GameBoard extends Component {
   constructor(props){
     super(props);
-    this.state = {
-      gameboard: this.props.gameboard
-    }
-    this.startingPos = this.startingPos.bind(this)
+   /* this.state = {
+      gameboard: GameBoardActions.getGameBoard(this.props.gameboardID)
+    }*/
+    this.startingPos = this.startingPos.bind(this);
+    this.onChange = this.onChange.bind(this);
+
+    const host = location.origin.replace(/^http/, 'ws')
+    const socket = ioClient.connect(host)
   }
 
-   startingPos(event) {
+  componentDidMount(){
+    GameBoardActions.getGameBoard(this.props.gameboardID);
+    GameBoardStore.startListening(this.onChange);
 
+    console.log("ioclient:", ioClient);
+
+    ioClient.on('connect', function(){
+      console.log('new game');
+      ioClient.emit('newGame')
+    });
+
+    //console.log("GameBoardStore.getGameBoard(this.props.gameboardID):", GameBoardStore.getGameBoard(this.props.gameboardID))
+    //console.log("game board id:",this.props.gameboardID )
+  }
+
+  onChange(){
+    console.log("change, set state to: ", GameBoardStore.getGameBoard(this.props.gameboardID) )
+    this.setState({gameboard: GameBoardStore.getGameBoard(this.props.gameboardID)})
+    //console.log("GameBoardStore.getGameBoard(this.props.gameboardID):", GameBoardStore.getGameBoard(this.props.gameboardID))
+  }
+
+  componentWillUnmount(){
+    GameBoardStore.stopListening(this.onChange);
+  }
+
+
+   startingPos(event) {
+    event.preventDefault();
+    console.log("CLICKKKKKKKKK")
     //swal({   title: "Error!",   text: "Here's my error message!",   type: "error",   confirmButtonText: "Cool" });
 
-    event.preventDefault();
     console.log('this.state:', this.state)
 
-    var stones = (this.state.gameboard.gameboard);
-    var player = (this.state.gameboard.currPlayer);
+    var stones = this.state.gameboard.gameboard.slice();
+    var player =  this.state.gameboard.currPlayer;
+    console.log("stones:", stones);
+    console.log('player:', player);
 
-    var gameOver = false;
+
     var holeIndex =  parseInt(event.target.id);
 
     //Pick Up Stones
@@ -35,14 +70,14 @@ export default class GameBoard extends Component {
     stones[holeIndex] = 0;
 
     let count = 0;
-    var index = (holeIndex + 1)%14;
+    var index = (holeIndex + 13)%14;
 
-    while(count < stonesInHand && gameOver === false ){
+    while(count < stonesInHand){
 
       //skip oppositeplayers bucket
       if( (index === 7 && player === true)|| (index === 0 && player === false)){
          console.log("skip bucket: ", index);
-         index = ((index + 1) % (14));
+         index = ((index + 13) % (14));
       }
 
       //if not other player's bucket, deposit stones
@@ -51,6 +86,8 @@ export default class GameBoard extends Component {
        //drop stone in hole
        stones[index]++;
        count++;
+       console.log("index:", index);
+       console.log("stones[index]", stones[index]);
 
         //if last stones lands in empty hole on your own side, collect pieces from opposite hole
         if(count  ===  stonesInHand && stones[index] === 1){
@@ -106,7 +143,6 @@ export default class GameBoard extends Component {
         //if winner set gameover
         //add swal
         if(row0Count === 0 ){
-          gameover = true;
           let winner = 'player 0';
           console.log("---------winner: ", winner);
           console.log("---------score: ", stones[0]);
@@ -114,44 +150,44 @@ export default class GameBoard extends Component {
           break;
         }
         else if (row1Count ===0){
-          gameover = true;
           let winner = 'player 1';
           console.log("---------winner: ", winner);
           console.log("---------score: ", stones[7]);
           stones = [0,4,4,4,4,4,4,0,4,4,4,4,4,4];
           break;
         }
-      index = ((index + 1)%(14));
+      index = ((index + 13)%(14));
       }
     }
 
     let newgameboard = {
+      _id: this.props.gameboardID,
       gameboard: stones,
       currPlayer: player
     }
 
-    console.log("------------------befote set: " , this.state.gameboard);
-    console.log("-----------------: " , this.state.gameboard.gameboard);
- 
-    this.setState({gameboard: newgameboard});
-
-    console.log("----------------set:", this.state.gameboard );
-    console.log("-------------------:", this.state.gameboard.gameboard );
-
-
-    /*console.log("set state to " , {gameboard: newgameboard})
-    console.log("set state to " , newgameboard)
-    console.log("this.state.gameboard", this.state.gameboard);
-    console.log("this.state.gameboard._id", this.state.gameboard._id);*/
-
-    GameBoardActions.updateGameBoard(this.state.gameboard);
+    console.log("newgameboard:", newgameboard);
+    GameBoardActions.updateGameBoard(newgameboard);
     //console.log("game" ,this.state.gameboard.gameboard);
-    console.log("this.state.gameboard.currPlayer" ,this.state.gameboard.currPlayer);
+    //console.log("this.state.gameboard.gameboard.currPlayer" ,this.state.gameboard.gameboard.currPlayer);
   }
 
-  render() { 
+  render() {
+    console.log("this.state" , this.state)
+     if(this.state){
 
-    let gameboard = this.state.gameboard;
+      let name;
+      if(this.state.gameboard.currPlayer){
+         name = this.state.gameboard.player1;
+      }
+      else{
+         name = this.state.gameboard.player0;
+      }
+
+    console.log("this.state", this.state);
+    console.log('this.props', this.props);
+ //console.log("this.state", this.state.gameboard.gameboard);
+    //let gameboard = this.state.gameboard.gameboard;
 
     var rotate90 = {
       position: 'absolute',
@@ -276,17 +312,17 @@ export default class GameBoard extends Component {
         bottom: '-520px'
       }
 
-      console.log("length:", this.state.gameboard.gameboard.length)
+      //console.log("length:", this.state.gameboard.gameboard.length)
       var ballstoDisplay = []
       for(let i =0; i< this.state.gameboard.gameboard.length; i++){
         let numballs = this.state.gameboard.gameboard[i];
         //console.log('numballs: ', numballs, ' at i', i);
         let ballHtml = []
         for(let k=0; k<numballs; k++){
-          ballHtml.push(<BallDisplay />)
+          ballHtml.push(<BallDisplay className = 'ballspan'/>)
         }
         ballstoDisplay.push(ballHtml);
-        console.log("ballstoDisplay", ballstoDisplay[i]);
+        //console.log("ballstoDisplay", ballstoDisplay[i]);
       }
 
       if(!this.state.gameboard.currPlayer) { var rotate = rotate90 ; var opRotate = letterN90}
@@ -294,39 +330,48 @@ export default class GameBoard extends Component {
 
 
     return (
-      <div >
-      <h4>Player {(this.state.gameboard.currPlayer)*1}'s turn</h4>
-      <div style = {rotate} className = "gameContainer">
-        <div style={board} className = 'background'>
-          <span style={bucket0} id='0'> <div> </div> {ballstoDisplay[0]} <div className = "stoneNum2"> {this.state.gameboard.gameboard[0]}</div></span>
-          <span style={holes}>
+      <div>
 
-            <div style={row1}>
-              <span style={hole} className = "hoverHole" onClick={this.startingPos} id='1'> {ballstoDisplay[1]} <div className = "stoneNum" style = {opRotate} > {this.state.gameboard.gameboard[1]}</div></span>
-              <span style={hole} className = "hoverHole" onClick={this.startingPos} id='2'>{ballstoDisplay[2]} <div  className = "stoneNum" style = {opRotate} >{this.state.gameboard.gameboard[2]} </div></span>
-              <span style={hole} className = "hoverHole" onClick={this.startingPos} id='3'>{ballstoDisplay[3]} <div className = "stoneNum" style = {opRotate} >{this.state.gameboard.gameboard[3]} </div></span>
-              <span style={hole} className = "hoverHole" onClick={this.startingPos} id='4'>{ballstoDisplay[4]} <div className = "stoneNum" style = {opRotate} >{this.state.gameboard.gameboard[4]} </div></span>
-              <span style={hole} className = "hoverHole" onClick={this.startingPos} id='5'>{ballstoDisplay[5]} <div className = "stoneNum" style = {opRotate} >{this.state.gameboard.gameboard[5]} </div></span>
-              <span style={hole} className = "hoverHole" onClick={this.startingPos} id='6'> {ballstoDisplay[6]} <div className = "stoneNum" style = {opRotate} >{this.state.gameboard.gameboard[6]} </div></span>
-            </div>
+      <div>
+      <h4>{name}'s turn</h4>
+        <div style = {rotate} className = "gameContainer">
+          <div style={board} className = 'background'>
+            <span style={bucket0} id='0'> <div> </div> {ballstoDisplay[0]} <div className = "stoneNum2"> {this.state.gameboard.gameboard[0]}</div></span>
+            <span style={holes}>
 
-            <div style ={row2}>
-              <span style ={hole} className = "hoverHole" onClick={this.startingPos} id='13'> {ballstoDisplay[13]} <div className = "stoneNum2" style = {opRotate} > {this.state.gameboard.gameboard[13]}</div></span>
-              <span style ={hole} className = "hoverHole" onClick={this.startingPos} id='12'>{ballstoDisplay[12]} <div className = "stoneNum2" style = {opRotate} > {this.state.gameboard.gameboard[12]}</div></span>
-              <span style ={hole} className = "hoverHole" onClick={this.startingPos} id='11'>{ballstoDisplay[11]} <div className = "stoneNum2" style = {opRotate} > {this.state.gameboard.gameboard[11]}</div></span>
-              <span style ={hole} className = "hoverHole" onClick={this.startingPos} id='10'> {ballstoDisplay[10]} <div className = "stoneNum2" style = {opRotate} > {this.state.gameboard.gameboard[10]}</div></span>
-              <span style ={hole} className = "hoverHole" onClick={this.startingPos} id='9'>{ballstoDisplay[9]} <div className = "stoneNum2" style = {opRotate} > {this.state.gameboard.gameboard[9]}</div></span>
-              <span style ={hole} className = "hoverHole" onClick={this.startingPos} id='8'>{ballstoDisplay[8]} <div className = "stoneNum2" style = {opRotate} > {this.state.gameboard.gameboard[8]}</div></span>
-            </div>
-          </span>
+              <div style={row1}>
+                <span style={hole} className = "hoverHole" onClick={this.startingPos} id='1'> {ballstoDisplay[1]} <div className = "stoneNum" style = {opRotate} > {this.state.gameboard.gameboard[1]}</div></span>
+                <span style={hole} className = "hoverHole" onClick={this.startingPos} id='2'> {ballstoDisplay[2]} <div  className = "stoneNum" style = {opRotate} >{this.state.gameboard.gameboard[2]} </div></span>
+                <span style={hole} className = "hoverHole" onClick={this.startingPos} id='3'> {ballstoDisplay[3]} <div className = "stoneNum" style = {opRotate} >{this.state.gameboard.gameboard[3]} </div></span>
+                <span style={hole} className = "hoverHole" onClick={this.startingPos} id='4'> {ballstoDisplay[4]} <div className = "stoneNum" style = {opRotate} >{this.state.gameboard.gameboard[4]} </div></span>
+                <span style={hole} className = "hoverHole" onClick={this.startingPos} id='5'> {ballstoDisplay[5]} <div className = "stoneNum" style = {opRotate} >{this.state.gameboard.gameboard[5]} </div></span>
+                <span style={hole} className = "hoverHole" onClick={this.startingPos} id='6'> {ballstoDisplay[6]} <div className = "stoneNum" style = {opRotate} >{this.state.gameboard.gameboard[6]} </div></span>
+              </div>
 
-          <span style = {bucket1} id = '7'><div> </div>{ballstoDisplay[7]} <div className = "stoneNum2"> {this.state.gameboard.gameboard[7]}</div></span>
+              <div style ={row2}>
+                <span style ={hole} className = "hoverHole" onClick={this.startingPos} id='13'> {ballstoDisplay[13]} <div className = "stoneNum2" style = {opRotate} > {this.state.gameboard.gameboard[13]}</div></span>
+                <span style ={hole} className = "hoverHole" onClick={this.startingPos} id='12'>{ballstoDisplay[12]} <div className = "stoneNum2" style = {opRotate} > {this.state.gameboard.gameboard[12]}</div></span>
+                <span style ={hole} className = "hoverHole" onClick={this.startingPos} id='11'>{ballstoDisplay[11]} <div className = "stoneNum2" style = {opRotate} > {this.state.gameboard.gameboard[11]}</div></span>
+                <span style ={hole} className = "hoverHole" onClick={this.startingPos} id='10'> {ballstoDisplay[10]} <div className = "stoneNum2" style = {opRotate} > {this.state.gameboard.gameboard[10]}</div></span>
+                <span style ={hole} className = "hoverHole" onClick={this.startingPos} id='9'>{ballstoDisplay[9]} <div className = "stoneNum2" style = {opRotate} > {this.state.gameboard.gameboard[9]}</div></span>
+                <span style ={hole} className = "hoverHole" onClick={this.startingPos} id='8'>{ballstoDisplay[8]} <div className = "stoneNum2" style = {opRotate} > {this.state.gameboard.gameboard[8]}</div></span>
+              </div>
+            </span>
+
+            <span style = {bucket1} id = '7'><div> </div>{ballstoDisplay[7]} <div className = "stoneNum2"> {this.state.gameboard.gameboard[7]}</div></span>
+          </div>
         </div>
-
-
       </div>
 
       </div>
     )
+    }
+    else{
+      return (
+        <div ></div>
+      )
+    }
+
+
   }
 }

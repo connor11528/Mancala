@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import GameBoard from './GameBoard'
 import { Link } from 'react-router'
 
+import ioClient from 'socket.io-client';
+
 import GameBoardActions from '../actions/GameBoardActions'
 
 export default class AddGameBoardForm extends Component {
@@ -10,10 +12,10 @@ export default class AddGameBoardForm extends Component {
 
     console.log("props", this.props)
 
-    this.state = {
+   /* this.state = {
       gameboard : [0,4,4,4,4,4,4,0,4,4,4,4,4,4],//new Array(14).fill(0,4,4,4,4,4,4,0,4,4,4,4,4,4),
       currPlayer: false
-    }
+    }*/
 
     this.initializeBoard = this.initializeBoard.bind(this);
   }
@@ -23,17 +25,17 @@ export default class AddGameBoardForm extends Component {
     console.log("initializeing Board")
     //console.log("this.state", this.state);
     //console.log("add :", this.state.gameboard);
-    GameBoardActions.addNewGameBoard(this.state);
+    GameBoardActions.addNewGameBoard();
   }
 
   render() {
     return (
       <div>
-        <button className="btn btn-default"
-                onClick={this.initializeBoard}
-                >Init Board</button>
+            <button className="btn btn-default"
+            onClick={this.initializeBoard}
+            >Init Board</button>
       </div>
-    )
+      )
   }
 }
 

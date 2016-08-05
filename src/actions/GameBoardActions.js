@@ -5,12 +5,12 @@ const GameBoardActions = {
   getAllGameBoards(){
     API.getAllGameBoards();
   },
-  addNewGameBoard(game){
-    console.log("add game: ", game )
-    API.addNewGameBoard(game);
+  addNewGameBoard(players){
+    console.log("players: ", players )
+    API.addNewGameBoard(players);
   },
-  getGameBoard(gameboard) {
-    API.getGameBoard(gameboard);
+  getGameBoard(id) {
+    API.getGameBoard(id);
   },
   updateGameBoard(game){
     console.log("update game:", game)

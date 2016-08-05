@@ -9,11 +9,10 @@ const ServerActions = {
   },
   receiveOneGameBoard(gameboard) {
     AppDispatcher.dispatch({
-      actionType: 'RECIEVE_ONE_GAMEBOARD',
+      actionType: 'RECEIVE_ONE_GAMEBOARD',
       gameboard
     });
   }
-  
 }
 
 export default ServerActions

@@ -10,25 +10,26 @@ router.get('/', (req, res) => {
 })
 
 router.get('/:id', (req, res) => {
-  Game.find({'_id' : req.params.id}, (err, game) => {
+  Game.findOne({'_id' : req.params.id}, (err, game) => {
     return res.status(err ? 400 : 200).send(err || game);
   })
 })
 
+//set players
+
 router.post('/', (req, res) => {
-  console.log("req.body:", req.body);
-  Game.create({}, (err, game) => {
+  console.log("req.body in post: ", req.body);
+  Game.create({player0: req.body.player0, player1: req.body.player1}, (err, game) => {
     return res.status(err ? 400 : 200).send(err || game);
   })
 })
 
 router.put('/', (req, res) => {
   console.log("req body:", req.body);
+  console.log('id:', req.body._id);
   Game.findByIdAndUpdate(req.body._id, req.body, 'new', (err, game) => {
-    if (err) return res.status(400).send(err);
-    Game.find({}, (err, games) => {
-      return res.status(err ? 400 : 200).send(err || games)
-    })
+     console.log('game: ', game);
+     return res.status(err ? 400 : 200).send(err || game)
   });
 })
 

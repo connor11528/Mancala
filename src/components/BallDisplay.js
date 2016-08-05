@@ -6,7 +6,7 @@ export default class AddGameBoardForm extends Component {
 
   render() {
     return (
-        <span className = "inlb">
+        <span className = 'ballspan'>
         <figure className="blueball"><span className="shadow"></span></figure>
         </span>
     )

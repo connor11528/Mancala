@@ -9,16 +9,17 @@ const API = {
   },
 
   getGameBoard(gameboardId){
+    //console.log("gameboardID", gameboardId)
      get('/api/gameboards/' + gameboardId)
-      .done(response => { ServerActions.receiveGameBoard(response) })
+      .done(response => { ServerActions.receiveOneGameBoard(response) })
   },
 
-  addNewGameBoard(gameboard) {
-    console.log("gameboard in API.js:", gameboard);
+  addNewGameBoard(players) {
+    console.log('players:', players);
     ajax({
       type: 'POST',
       url: '/api/gameboards',
-      data: JSON.stringify(gameboard),
+      data: players,
       dataType: 'json'
      }) 
     .done(response => { ServerActions.receiveOneGameBoard(response) })
@@ -26,8 +27,8 @@ const API = {
 
   updateGameBoard(game) {
     console.log("Game: ", game);
-    console.log('game.gameboard', game.gameboard);
-    console.log('game.currPlayer', game.currPlayer);
+    //console.log('game.gameboard', game.gameboard);
+    //console.log('game.currPlayer', game.currPlayer);
     //console.log('game.gameboard', game.gameboard);
 
     fetch('/api/gameboards', {
@@ -37,9 +38,10 @@ const API = {
       }),
       body: JSON.stringify(game)
     })
-      .then((res) => res.json())
+      .then((res) =>res.json())
       .then(data => {
         console.log("data:", data);
+         ServerActions.receiveOneGameBoard(data) //same call as get origional gameboard (might be problem)
       })
   },
 

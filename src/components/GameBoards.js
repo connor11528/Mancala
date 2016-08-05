@@ -5,6 +5,8 @@ import GameBoardsDisplay from './GameBoardsDisplay'
 import GameBoardActions from '../actions/GameBoardActions'
 import GameBoardStore from '../stores/GameBoardStore'
 
+import ioClient from 'socket.io-client';
+
 let _getComponentState = () => {
   return {
     gameboards: GameBoardStore.getAllGameBoards()
@@ -17,37 +19,48 @@ export default class GameBoards extends Component {
 
     this.state = _getComponentState()
 
-    console.log("this.state", this.state);
+    console.log("this.state in gameboards", this.state);
     this._onChange = this._onChange.bind(this)
   }
 
   componentDidMount() {
     GameBoardActions.getAllGameBoards();
     GameBoardStore.startListening(this._onChange);
+    console.log("after get", this.state.gameboards );
+    socket = ioClient.connect();
+
+    socket.on('newGame', function(data){ 
+      console.log('socket data:', data);
+    }) 
+
   }
 
   componentWillUnmount() {
     GameBoardStore.stopListening(this._onChange)
+
   }
 
   _onChange() {
     this.setState(_getComponentState())
+    console.log("after on change", this.state.gameboards );
+
+
   }
 
   render() {
     return (
     <div>
-        <h1>GameBoards</h1>
+        <div className = 'tablebackground'>
+        <h1>Mancala</h1>
 
-        <div>
+        {/*<div>
           <AddGameBoardForm addGameBoard={this.AddGameBoard} />
-        </div>
+        </div>*/}
 
         <div>
           <GameBoardsDisplay gameboards={this.state.gameboards} />
         </div>
-
-
+        </div>
       </div>
     )
   }

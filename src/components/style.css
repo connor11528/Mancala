@@ -2,6 +2,23 @@
   display: inline-block;
 }
 
+.ballspan
+{
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.tablebackground{
+  background-color: none;
+  width: 100%;
+ /* background: url('http://preview.turbosquid.com/Preview/2014/07/10__19_08_25/CartoonWoodTable.5.png140b042e-ef99-4d6e-81a1-321babb0087cOriginal.jpg') no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;*/
+    /*background-image: url('http://preview.turbosquid.com/Preview/2014/07/10__19_08_25/CartoonWoodTable.5.png140b042e-ef99-4d6e-81a1-321babb0087cOriginal.jpg')*/
+}
+
 .stoneNum{
   /*position: absolute;
   padding-left: 5px;*/
@@ -35,9 +52,8 @@
   display: inline-block;
   width: 17px;
   height: 17px;
-  margin: 0;
   border-radius: 50%;
-  margin: 1px;
+  margin: 0px;
   position: relative;
    z-index: 0;
   background: radial-gradient(circle at 50% 120%, #81e8f6, #76deef 12%, #055194 70%, #062745 100%);
@@ -45,6 +61,8 @@
 .blueball:before {
   content: "";
   position: absolute;
+  display: inline-block;
+  vertical-align: middle;
   top: 1%;
   left: 5%;
   width: 90%;

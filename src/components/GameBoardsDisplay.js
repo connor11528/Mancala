@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import GameBoard from './GameBoard';
 
+import ioClient from 'socket.io-client';
+
 export default class GameBoardDisplay extends Component {
   constructor(props){
     super(props);
@@ -8,7 +10,7 @@ export default class GameBoardDisplay extends Component {
 
   render() {
     let { gameboards } = this.props
-    let display = gameboards.length && gameboards.map(gameboard => <GameBoard key={gameboard._id} gameboard={gameboard} />);
+    let display = gameboards.length && gameboards.map(gameboardID => <GameBoard key={gameboardID} gameboardID = {gameboardID} />);
 
     return (
         <div >
