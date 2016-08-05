@@ -1,8 +1,9 @@
-import { Router } from 'express'
-const router = Router();
+const express = require('express')
+// { Router } from 'express'
+const router = express.Router();
 
-import gameboards from './gameboards'
+const gameboards = require('./gameboards')
 
 router.use('/gameboards', gameboards);
 
-export default router
+module.exports = router;

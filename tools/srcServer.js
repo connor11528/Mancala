@@ -1,32 +1,43 @@
-import express from 'express';
-import webpack from 'webpack';
-import path from 'path';
-import config from '../webpack.config';
-import open from 'open';
+const express = require('express')
+const webpack = require('webpack');
 
-import logger from 'morgan';
-import bodyParser from 'body-parser';
-import cookieParser from 'cookie-parser';
+const path = require('path');
+const config = require('../webpack.config');
+const open = require('open');
 
-import api from './api/index'
+//const dotenv = require('dotenv');
+//dotenv.load();
+
+const logger = require('morgan');
+const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
+
+const api = require('./api/index');
 /* eslint-disable no-console */
-import fs from 'fs';
-//import SocketIo from 'socket.io';
+const fs = require('fs');
+//const SocketIo = ('socket.io';
 
-
-const port = 3000;
+const port = process.env.PORT || 3000;
 const app = express();
+
 const compiler = webpack(config);
 
 
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/mancala');
 
-app.use(require('webpack-dev-middleware')(compiler, {
+const webpackMiddleware = require("webpack-dev-middleware");
+
+app.use(webpackMiddleware(compiler, {
   noInfo: true,
-  publicPath: config.output.publicPath
+  publicPath: config.output.publicPath,
+  historyApiFallback: true
 }));
+
+
+console.log('here2')
+
 
 app.use(require('webpack-hot-middleware')(compiler));
 
@@ -61,6 +72,7 @@ let connections;
 io.on('connection', function(socket) {
 
     console.log('socket connected:', socket);
+     console.log(`Clients connected: ${++connections}`);
 
     socket.join('room');
 
@@ -72,6 +84,11 @@ io.on('connection', function(socket) {
       socket.emit('receive socket', socket.id)
   })
 })
+
+  io.on('disconnect', function() {
+    console.log('Disconnect.')
+    console.log(`Clients connected: ${--connections}`);
+  });
 
 /*var server = require('http').createServer(app);
 var io = require('socket.io')(server);

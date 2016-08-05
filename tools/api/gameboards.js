@@ -1,7 +1,8 @@
-import { Router } from 'express'
-const router = Router();
+const express = require('express')
+// { Router } from 'express'
+const router = express.Router();
 
-import Game from '../db/Game'
+const Game = require('../db/Game');
 
 router.get('/', (req, res) => {
   Game.find({}, (err, games) => {
@@ -42,4 +43,4 @@ router.delete('/:id', (req, res) => {
   })
 })
 
-export default router
+module.exports = router;
