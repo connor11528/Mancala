@@ -199,7 +199,7 @@ export default class GameBoard extends Component {
 
     var rotate90 = {
       position: 'absolute',
-      top: '380px',
+      top: '400px',
       WebkitTransform: 'rotate(90deg)',
       MozTransform: 'rotate(90deg)',
       OTransform: 'rotate(90deg)',
@@ -209,7 +209,7 @@ export default class GameBoard extends Component {
 
     var rotateN90 = {
       position: 'absolute',
-      top: '380px',
+      top: '400px',
       WebkitTransform: 'rotate(-90deg)',
       MozTransform: 'rotate(-90deg)',
       OTransform: 'rotate(-90deg)',
