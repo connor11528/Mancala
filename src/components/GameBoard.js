@@ -19,6 +19,7 @@ export default class GameBoard extends Component {
     }*/
     this.startingPos = this.startingPos.bind(this);
     this.onChange = this.onChange.bind(this);
+    this.newGame = this.newGame.bind(this);
 
     const host = location.origin.replace(/^http/, 'ws')
     const socket = ioClient.connect(host)
@@ -47,6 +48,13 @@ export default class GameBoard extends Component {
 
   componentWillUnmount(){
     GameBoardStore.stopListening(this.onChange);
+  }
+
+  newGame(event){
+    event.preventDefault();
+    GameBoardActions.deleteGameBoard(this.props.gameboardID);
+    window.location = '/';
+
   }
 
 
@@ -325,14 +333,29 @@ export default class GameBoard extends Component {
         //console.log("ballstoDisplay", ballstoDisplay[i]);
       }
 
-      if(!this.state.gameboard.currPlayer) { var rotate = rotate90 ; var opRotate = letterN90}
-      if(this.state.gameboard.currPlayer) { var rotate = rotateN90; var opRotate = letter90}
+      if(!this.state.gameboard.currPlayer) { 
+        var rotate = rotate90 ; 
+        var opRotate = letterN90;
+        var hov0 = 'hoverHole'
+        var hov1 = '';
+        var click0 = this.startingPos
+        var click1 = null;
+      }
+      if(this.state.gameboard.currPlayer) { 
+        var rotate = rotateN90; 
+        var opRotate = letter90;
+        var hov0 = '';
+        var hov1 = 'hoverHole'
+        var click1 = this.startingPos
+        var click0 = null;
+      }
 
 
     return (
       <div>
 
       <div>
+      <button className = 'btn btn-warning' onClick = {this.newGame}>New Game</button>
       <h4>{name}'s turn</h4>
         <div style = {rotate} className = "gameContainer">
           <div style={board} className = 'background'>
@@ -340,21 +363,21 @@ export default class GameBoard extends Component {
             <span style={holes}>
 
               <div style={row1}>
-                <span style={hole} className = "hoverHole" onClick={this.startingPos} id='1'> {ballstoDisplay[1]} <div className = "stoneNum" style = {opRotate} > {this.state.gameboard.gameboard[1]}</div></span>
-                <span style={hole} className = "hoverHole" onClick={this.startingPos} id='2'> {ballstoDisplay[2]} <div  className = "stoneNum" style = {opRotate} >{this.state.gameboard.gameboard[2]} </div></span>
-                <span style={hole} className = "hoverHole" onClick={this.startingPos} id='3'> {ballstoDisplay[3]} <div className = "stoneNum" style = {opRotate} >{this.state.gameboard.gameboard[3]} </div></span>
-                <span style={hole} className = "hoverHole" onClick={this.startingPos} id='4'> {ballstoDisplay[4]} <div className = "stoneNum" style = {opRotate} >{this.state.gameboard.gameboard[4]} </div></span>
-                <span style={hole} className = "hoverHole" onClick={this.startingPos} id='5'> {ballstoDisplay[5]} <div className = "stoneNum" style = {opRotate} >{this.state.gameboard.gameboard[5]} </div></span>
-                <span style={hole} className = "hoverHole" onClick={this.startingPos} id='6'> {ballstoDisplay[6]} <div className = "stoneNum" style = {opRotate} >{this.state.gameboard.gameboard[6]} </div></span>
+                <span style={hole} className = {hov0} onClick={click0} id='1'> {ballstoDisplay[1]} <div className = "stoneNum" style = {opRotate} > {this.state.gameboard.gameboard[1]}</div></span>
+                <span style={hole} className = {hov0} onClick={click0} id='2'> {ballstoDisplay[2]} <div  className = "stoneNum" style = {opRotate} >{this.state.gameboard.gameboard[2]} </div></span>
+                <span style={hole} className = {hov0} onClick={click0} id='3'> {ballstoDisplay[3]} <div className = "stoneNum" style = {opRotate} >{this.state.gameboard.gameboard[3]} </div></span>
+                <span style={hole} className = {hov0} onClick={click0} id='4'> {ballstoDisplay[4]} <div className = "stoneNum" style = {opRotate} >{this.state.gameboard.gameboard[4]} </div></span>
+                <span style={hole} className = {hov0} onClick={click0} id='5'> {ballstoDisplay[5]} <div className = "stoneNum" style = {opRotate} >{this.state.gameboard.gameboard[5]} </div></span>
+                <span style={hole} className = {hov0} onClick={click0} id='6'> {ballstoDisplay[6]} <div className = "stoneNum" style = {opRotate} >{this.state.gameboard.gameboard[6]} </div></span>
               </div>
 
               <div style ={row2}>
-                <span style ={hole} className = "hoverHole" onClick={this.startingPos} id='13'> {ballstoDisplay[13]} <div className = "stoneNum2" style = {opRotate} > {this.state.gameboard.gameboard[13]}</div></span>
-                <span style ={hole} className = "hoverHole" onClick={this.startingPos} id='12'>{ballstoDisplay[12]} <div className = "stoneNum2" style = {opRotate} > {this.state.gameboard.gameboard[12]}</div></span>
-                <span style ={hole} className = "hoverHole" onClick={this.startingPos} id='11'>{ballstoDisplay[11]} <div className = "stoneNum2" style = {opRotate} > {this.state.gameboard.gameboard[11]}</div></span>
-                <span style ={hole} className = "hoverHole" onClick={this.startingPos} id='10'> {ballstoDisplay[10]} <div className = "stoneNum2" style = {opRotate} > {this.state.gameboard.gameboard[10]}</div></span>
-                <span style ={hole} className = "hoverHole" onClick={this.startingPos} id='9'>{ballstoDisplay[9]} <div className = "stoneNum2" style = {opRotate} > {this.state.gameboard.gameboard[9]}</div></span>
-                <span style ={hole} className = "hoverHole" onClick={this.startingPos} id='8'>{ballstoDisplay[8]} <div className = "stoneNum2" style = {opRotate} > {this.state.gameboard.gameboard[8]}</div></span>
+                <span style ={hole} className = {hov1} onClick={click1} id='13'> {ballstoDisplay[13]} <div className = "stoneNum2" style = {opRotate} > {this.state.gameboard.gameboard[13]}</div></span>
+                <span style ={hole} className = {hov1} onClick={click1} id='12'>{ballstoDisplay[12]} <div className = "stoneNum2" style = {opRotate} > {this.state.gameboard.gameboard[12]}</div></span>
+                <span style ={hole} className = {hov1} onClick={click1} id='11'>{ballstoDisplay[11]} <div className = "stoneNum2" style = {opRotate} > {this.state.gameboard.gameboard[11]}</div></span>
+                <span style ={hole} className = {hov1} onClick={click1} id='10'> {ballstoDisplay[10]} <div className = "stoneNum2" style = {opRotate} > {this.state.gameboard.gameboard[10]}</div></span>
+                <span style ={hole} className = {hov1} onClick={click1} id='9'>{ballstoDisplay[9]} <div className = "stoneNum2" style = {opRotate} > {this.state.gameboard.gameboard[9]}</div></span>
+                <span style ={hole} className = {hov1} onClick={click1} id='8'>{ballstoDisplay[8]} <div className = "stoneNum2" style = {opRotate} > {this.state.gameboard.gameboard[8]}</div></span>
               </div>
             </span>
 

@@ -45,7 +45,7 @@ const API = {
       })
   },
 
-  deleteGameBoard(gameBoardID) {
+  deleteGameboard(gameBoardID) {
     fetch('/api/gameboards/' + gameBoardID, {
       method: 'DELETE'
     })

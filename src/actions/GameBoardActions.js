@@ -9,6 +9,10 @@ const GameBoardActions = {
     console.log("players: ", players )
     API.addNewGameBoard(players);
   },
+  deleteGameBoard(id){
+    console.log('delete by id')
+    API.deleteGameboard(id);
+  },
   getGameBoard(id) {
     API.getGameBoard(id);
   },
