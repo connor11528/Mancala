@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router'
 import GameBoard from './GameBoard'
+//const uuid = require('uuid');
 
 import ioClient from 'socket.io-client';
 
@@ -25,7 +26,7 @@ export default class Dashboard extends Component {
     event.preventDefault();
     console.log("initializeing Board")
     GameBoardActions.addNewGameBoard(this.state);
-    window.location = '/gameBoards';
+    window.location = `/gameBoards`//${this.state.playersId}`;
   }
 
 

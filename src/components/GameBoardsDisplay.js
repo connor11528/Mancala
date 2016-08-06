@@ -15,10 +15,12 @@ export default class GameBoardDisplay extends Component {
 
     //match gameboard to game room socketID
     let display = gameboards.length && gameboards.map(gameboardID => <GameBoard key={gameboardID} gameboardID = {gameboardID} />);
-    console.log(display[0]);
+
+    console.log('display', display);
+    console.log('display', display.length-1);
     return (
         <div >
-          { display[0] || 'No GameBoards To Display'}
+          { display[display.length-1] || 'No GameBoards To Display'}
         </div>
 
     )
