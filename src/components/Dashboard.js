@@ -24,7 +24,7 @@ export default class Dashboard extends Component {
   initializeBoard(event){
     //console.log('socket:', socket);
     event.preventDefault();
-    console.log("initializeing Board")
+    //console.log("initializeing Board")
     GameBoardActions.addNewGameBoard(this.state);
     window.location = `/gameBoards`//${this.state.playersId}`;
   }

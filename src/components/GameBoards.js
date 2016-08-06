@@ -19,19 +19,19 @@ export default class GameBoards extends Component {
 
     this.state = _getComponentState()
 
-    console.log("this.state in gameboards", this.state);
+    //console.log("this.state in gameboards", this.state);
     this._onChange = this._onChange.bind(this)
   }
 
   componentDidMount() {
     GameBoardActions.getAllGameBoards();
     GameBoardStore.startListening(this._onChange);
-    console.log("after get", this.state.gameboards );
-    socket = ioClient.connect();
+    //console.log("after get", this.state.gameboards );
+    //socket = ioClient.connect();
 
-    socket.on('newGame', function(data){ 
-      console.log('socket data:', data);
-    }) 
+    /*socket.on('newGame', function(data){ 
+      //console.log('socket data:', data);
+    }) */
 
   }
 
@@ -42,7 +42,7 @@ export default class GameBoards extends Component {
 
   _onChange() {
     this.setState(_getComponentState())
-    console.log("after on change", this.state.gameboards );
+    //console.log("after on change", this.state.gameboards );
 
 
   }

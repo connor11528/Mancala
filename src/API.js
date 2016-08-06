@@ -26,7 +26,7 @@ const API = {
   },
 
   updateGameBoard(game) {
-    console.log("Game: ", game);
+    //console.log("Game: ", game);
     //console.log('game.gameboard', game.gameboard);
     //console.log('game.currPlayer', game.currPlayer);
     //console.log('game.gameboard', game.gameboard);
@@ -40,7 +40,7 @@ const API = {
     })
       .then((res) =>res.json())
       .then(data => {
-        console.log("data:", data);
+        //console.log("data:", data);
          ServerActions.receiveOneGameBoard(data) //same call as get origional gameboard (might be problem)
       })
   },
@@ -53,7 +53,7 @@ const API = {
         return response.json();
       })
       .then(data => {
-        console.log(data);
+        //console.log(data);
         ServerActions.receiveGameBoards(data)
       })
       .catch(err => {

@@ -6,18 +6,18 @@ const GameBoardActions = {
     API.getAllGameBoards();
   },
   addNewGameBoard(players){
-    console.log("players: ", players )
+    //console.log("players: ", players )
     API.addNewGameBoard(players);
   },
   deleteGameBoard(id){
-    console.log('delete by id')
+    //console.log('delete by id')
     API.deleteGameboard(id);
   },
   getGameBoard(id) {
     API.getGameBoard(id);
   },
   updateGameBoard(game){
-    console.log("update game:", game)
+    //console.log("update game:", game)
     API.updateGameBoard(game);
   }
 }

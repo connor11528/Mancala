@@ -10,7 +10,7 @@ export default class AddGameBoardForm extends Component {
   constructor(props){
     super(props);
 
-    console.log("props", this.props)
+    //console.log("props", this.props)
 
    /* this.state = {
       gameboard : [0,4,4,4,4,4,4,0,4,4,4,4,4,4],//new Array(14).fill(0,4,4,4,4,4,4,0,4,4,4,4,4,4),
@@ -22,7 +22,7 @@ export default class AddGameBoardForm extends Component {
 
   initializeBoard(event){
     event.preventDefault();
-    console.log("initializeing Board")
+    //console.log("initializeing Board")
     //console.log("this.state", this.state);
     //console.log("add :", this.state.gameboard);
     GameBoardActions.addNewGameBoard();

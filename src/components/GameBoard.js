@@ -8,7 +8,7 @@ import GameBoardActions from '../actions/GameBoardActions'
 import GameBoardStore from '../stores/GameBoardStore'
 import css from './style.css'
 
-import ioClient from 'socket.io-client';
+//import ioClient from 'socket.io-client';
 import toastr from 'toastr';
 
 export default class GameBoard extends Component {
@@ -22,26 +22,26 @@ export default class GameBoard extends Component {
     this.newGame = this.newGame.bind(this);
 
     const host = location.origin.replace(/^http/, 'ws')
-    const socket = ioClient.connect(host)
+    //const socket = ioClient.connect(host)
   }
 
   componentDidMount(){
     GameBoardActions.getGameBoard(this.props.gameboardID);
     GameBoardStore.startListening(this.onChange);
 
-    console.log("ioclient:", ioClient);
+    //console.log("ioclient:", ioClient);
 
-    ioClient.on('connect', function(){
-      console.log('new game');
+    /*ioClient.on('connect', function(){
+      //console.log('new game');
       ioClient.emit('newGame')
-    });
+    });*/
 
     //console.log("GameBoardStore.getGameBoard(this.props.gameboardID):", GameBoardStore.getGameBoard(this.props.gameboardID))
     //console.log("game board id:",this.props.gameboardID )
   }
 
   onChange(){
-    console.log("change, set state to: ", GameBoardStore.getGameBoard(this.props.gameboardID) )
+    //console.log("change, set state to: ", GameBoardStore.getGameBoard(this.props.gameboardID) )
     this.setState({gameboard: GameBoardStore.getGameBoard(this.props.gameboardID)})
     //console.log("GameBoardStore.getGameBoard(this.props.gameboardID):", GameBoardStore.getGameBoard(this.props.gameboardID))
   }
@@ -65,8 +65,8 @@ export default class GameBoard extends Component {
 
     var stones = this.state.gameboard.gameboard.slice();
     var player =  this.state.gameboard.currPlayer;
-    console.log("stones:", stones);
-    console.log('player:', player);
+    //console.log("stones:", stones);
+    //console.log('player:', player);
 
 
     var holeIndex =  parseInt(event.target.id);
@@ -95,16 +95,16 @@ export default class GameBoard extends Component {
         //add swal
     if(row0Count === 0 ){
         let winner = 'player 0';
-        console.log("---------winner: ", winner);
-        console.log("---------score: ", stones[0]);
+        //console.log("---------winner: ", winner);
+        //console.log("---------score: ", stones[0]);
         toastr.success(`${this.state.gameboard.player0} wins with`, `${stones[7]} stones`)
         stones = [0,4,4,4,4,4,4,0,4,4,4,4,4,4];
         return;
     }
     if (row1Count ===0){
         let winner = 'player 1';
-        console.log("---------winner: ", winner);
-        console.log("---------score: ", stones[7]);
+        //console.log("---------winner: ", winner);
+        //console.log("---------score: ", stones[7]);
         toastr.success(`${this.state.gameboard.player1} wins with`, `${stones[0]} stones`)
         stones = [0,4,4,4,4,4,4,0,4,4,4,4,4,4];
         return;
@@ -115,7 +115,7 @@ export default class GameBoard extends Component {
 
       //skip oppositeplayers bucket
       if( (index === 7 && player === true)|| (index === 0 && player === false)){
-         console.log("skip bucket: ", index);
+         //console.log("skip bucket: ", index);
          index = ((index + 13) % (14));
       }
 
@@ -125,8 +125,8 @@ export default class GameBoard extends Component {
        //drop stone in hole
        stones[index]++;
        count++;
-       console.log("index:", index);
-       console.log("stones[index]", stones[index]);
+       //console.log("index:", index);
+       //console.log("stones[index]", stones[index]);
 
         //if last stones lands in empty hole on your own side, collect pieces from opposite hole
         if(count  ===  stonesInHand && stones[index] === 1){
@@ -158,11 +158,11 @@ export default class GameBoard extends Component {
         //if stone doesn't land in your bucket go to next player
         if(count  ===  stonesInHand){
           if( (index === 0 && player === true ) || ( index ===7 && player === false) ){
-            console.log("land in own bucket")
+            //console.log("land in own bucket")
           }
         else{
           player = !player;  
-          console.log("switch to player: ", player)
+          //console.log("switch to player: ", player)
         }
       }
 
@@ -178,14 +178,14 @@ export default class GameBoard extends Component {
       currPlayer: player
     }
 
-    console.log("newgameboard:", newgameboard);
+    //console.log("newgameboard:", newgameboard);
     GameBoardActions.updateGameBoard(newgameboard);
     //console.log("game" ,this.state.gameboard.gameboard);
     //console.log("this.state.gameboard.gameboard.currPlayer" ,this.state.gameboard.gameboard.currPlayer);
   }
 
   render() {
-    console.log("this.state" , this.state)
+    //console.log("this.state" , this.state)
      if(this.state){
 
       let name;
@@ -196,8 +196,8 @@ export default class GameBoard extends Component {
          name = this.state.gameboard.player0;
       }
 
-    console.log("this.state", this.state);
-    console.log('this.props', this.props);
+    //console.log("this.state", this.state);
+    //console.log('this.props', this.props);
  //console.log("this.state", this.state.gameboard.gameboard);
     //let gameboard = this.state.gameboard.gameboard;
 
@@ -331,7 +331,7 @@ export default class GameBoard extends Component {
         //console.log('numballs: ', numballs, ' at i', i);
         let ballHtml = []
         for(let k=0; k<numballs; k++){
-          ballHtml.push(<BallDisplay className = 'ballspan'/>)
+          ballHtml.push(<BallDisplay key={k} className = 'ballspan'/>)
         }
         ballstoDisplay.push(ballHtml);
         //console.log("ballstoDisplay", ballstoDisplay[i]);

@@ -20,7 +20,7 @@ class GameBoardsStore extends EventEmitter {
         case 'RECEIVE_ONE_GAMEBOARD':
           //__gameboards.push(action.gameboard);
           // __gameboardsbyid[gameboard._id] = action.gameboard;
-          console.log("action.gameboard: ", action.gameboard)
+          //console.log("action.gameboard: ", action.gameboard)
           __gameboardsbyid[action.gameboard._id] = action.gameboard;
           //__gameboards.push(action.gameboard._id);
           this.emit('CHANGE');
