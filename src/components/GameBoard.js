@@ -9,7 +9,7 @@ import GameBoardStore from '../stores/GameBoardStore'
 import css from './style.css'
 
 import ioClient from 'socket.io-client';
-
+import toastr from 'toastr';
 
 export default class GameBoard extends Component {
   constructor(props){
@@ -59,11 +59,9 @@ export default class GameBoard extends Component {
 
 
    startingPos(event) {
-    event.preventDefault();
-    console.log("CLICKKKKKKKKK")
-    //swal({   title: "Error!",   text: "Here's my error message!",   type: "error",   confirmButtonText: "Cool" });
 
-    console.log('this.state:', this.state)
+    event.preventDefault();
+    //swal({   title: "Error!",   text: "Here's my error message!",   type: "error",   confirmButtonText: "Cool" });
 
     var stones = this.state.gameboard.gameboard.slice();
     var player =  this.state.gameboard.currPlayer;
@@ -79,6 +77,39 @@ export default class GameBoard extends Component {
 
     let count = 0;
     var index = (holeIndex + 13)%14;
+
+
+    var row0Count =0;
+    var row1Count =0;
+
+    for(var i=0; i<6; i++){
+      if(stones[i+1] !== 0){
+        row0Count += stones[i+1];
+      }
+      if(stones[i+8] !== 0){
+        row1Count+= stones[i+8];
+      }
+    }
+
+        //if winner set gameover
+        //add swal
+    if(row0Count === 0 ){
+        let winner = 'player 0';
+        console.log("---------winner: ", winner);
+        console.log("---------score: ", stones[0]);
+        toastr.success(`${this.state.gameboard.player0} wins with`, `${stones[7]} stones`)
+        stones = [0,4,4,4,4,4,4,0,4,4,4,4,4,4];
+        return;
+    }
+    if (row1Count ===0){
+        let winner = 'player 1';
+        console.log("---------winner: ", winner);
+        console.log("---------score: ", stones[7]);
+        toastr.success(`${this.state.gameboard.player1} wins with`, `${stones[0]} stones`)
+        stones = [0,4,4,4,4,4,4,0,4,4,4,4,4,4];
+        return;
+    }
+
 
     while(count < stonesInHand){
 
@@ -136,37 +167,7 @@ export default class GameBoard extends Component {
       }
 
         //check for win
-        var row0Count =0;
-        var row1Count =0;
-
-        for(var i=0; i<6; i++){
-          if(stones[i+1] !== 0){
-            row0Count += stones[i+1];
-          }
-          if(stones[i+8] !== 0){
-            row1Count+= stones[i+8];
-          }
-        }
-
-        //if winner set gameover
-        //add swal
-        if(row0Count === 0 ){
-          let winner = 'player 0';
-          console.log("---------winner: ", winner);
-          console.log("---------score: ", stones[0]);
-          alert(this.state.gameboard.player0 , 'wins with ', stones[7], 'stones')
-          stones = [0,4,4,4,4,4,4,0,4,4,4,4,4,4];
-          break;
-        }
-        else if (row1Count ===0){
-          let winner = 'player 1';
-          console.log("---------winner: ", winner);
-          console.log("---------score: ", stones[7]);
-          alert(this.state.gameboard.player1 , 'wins with ', stones[0], 'stones')
-          stones = [0,4,4,4,4,4,4,0,4,4,4,4,4,4];
-
-          break;
-        }
+        
       index = ((index + 13)%(14));
       }
     }
@@ -357,7 +358,7 @@ export default class GameBoard extends Component {
     return (
       <div>
 
-      <button className = 'btn btn-warning title newgamebtn font' onClick = {this.newGame}>New Game</button>
+      <button className = 'btn btn-md btn-warning title newgamebtn font' onClick = {this.newGame}>New Game</button>
       <h4 className = 'title name font'>{name}'s turn</h4>
       <div className = 'fullwidth'>
         <div style = {rotate} className = "gameContainer">

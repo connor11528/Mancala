@@ -67,12 +67,11 @@ const io = require('socket.io')(server);
 
 //console.log('io', io);
 //console.log("\nserver:", server)
-let connections;
+var connections =0;
 
 io.on('connection', function(socket) {
 
-    console.log('socket connected:', socket);
-     console.log(`Clients connected: ${++connections}`);
+     console.log(`Clients connected: `, connections++);
 
     socket.join('room');
 
@@ -87,7 +86,7 @@ io.on('connection', function(socket) {
 
   io.on('disconnect', function() {
     console.log('Disconnect.')
-    console.log(`Clients connected: ${--connections}`);
+    console.log(`Clients -connected: `, connections--);
   });
 
 /*var server = require('http').createServer(app);

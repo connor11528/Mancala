@@ -12,7 +12,8 @@
   background-color: none;
   width: 100%;
   position: absolute;
-  left:10px; /* background: url('http://preview.turbosquid.com/Preview/2014/07/10__19_08_25/CartoonWoodTable.5.png140b042e-ef99-4d6e-81a1-321babb0087cOriginal.jpg') no-repeat center center fixed; 
+  left:10px; 
+    /* background: url('http://preview.turbosquid.com/Preview/2014/07/10__19_08_25/CartoonWoodTable.5.png140b042e-ef99-4d6e-81a1-321babb0087cOriginal.jpg') no-repeat center center fixed; 
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -26,7 +27,7 @@
   font-style: normal;
   font-variant: normal;
   font-weight: 400;
-  line-height: 40px;
+  line-height: 30px;
 }
 
 h1 {
@@ -67,6 +68,7 @@ h2{
 .startbtn{
   margin-top: 5%;
 }
+
 
 .newgamebtn{
   margin-top: 125px;
